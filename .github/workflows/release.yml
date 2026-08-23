@@ -6,6 +6,7 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
       - 'v[0-9]+.[0-9]+.[0-9]+-beta*'
       - 'v[0-9]+.[0-9]+.[0-9]+-alpha*'
+      - 'v[0-9]+.[0-9]+.[0-9]+-classic*'
     branches:
       - alpha
       - dev
@@ -115,7 +116,7 @@ jobs:
 
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             tag="${GITHUB_REF#refs/tags/}"
-            norm_tag="${tag#v}"
+            norm_tag="${tag#v}"; norm_tag="${norm_tag%-classic}"
             norm_ver="${version#v}"; norm_ver="${norm_ver%-classic}"
 
             if [[ "$norm_tag" != "$norm_ver" ]]; then
