@@ -1,3 +1,10 @@
+# v1.9.8-classic - 2026-08-22
+
+## Changes
+- **Classic Era fixes**: removed a call to the nonexistent `SQP:RegisterEvents()` at load (events self-register in `data/events.lua`) and migrated all 215 obsolete `SQPSettings` global references to the canonical `SQP:GetSettings()` accessor backed by the RGX database
+- **Version display** now reads TOC metadata instead of a hardcoded string
+- **Release pipeline** corrected for the fork: packager now ships the zip as `SQP_Classic/` (was `SimpleQuestPlates/`, which the client would not load), and the workflow reads `SQP_Classic.toc`
+
 # v1.9.7-classic - 2026-08-08
 
 ## Changes
