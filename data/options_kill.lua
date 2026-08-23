@@ -22,7 +22,7 @@ function SQP:CreateKillOptions(content)
 
     -- ── Slider helper ─────────────────────────────────────────────────────────
     local function MakeSlider(parent, labelText, key, defaultVal, minVal, maxVal, yOff)
-        local val = SQPSettings[key] ~= nil and SQPSettings[key] or defaultVal
+        local val = SQP:GetSettings()[key] ~= nil and SQP:GetSettings()[key] or defaultVal
         local lbl = parent:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
         lbl:SetPoint("TOPLEFT", 20, yOff)
         lbl:SetText(string.format("%s: %d", labelText, val))
@@ -70,7 +70,7 @@ function SQP:CreateKillOptions(content)
     -- Show Kill Icon
     local showFrame = self:CreateStyledCheckbox(leftColumn, "Show Kill Icon")
     showFrame:SetPoint("TOPLEFT", 20, yOffset)
-    showFrame.checkbox:SetChecked(SQPSettings.showKillIcon ~= false)
+    showFrame.checkbox:SetChecked(SQP:GetSettings().showKillIcon ~= false)
     self.optionControls.showKillIcon = showFrame.checkbox
     showFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('showKillIcon', self:GetChecked())
@@ -90,7 +90,7 @@ function SQP:CreateKillOptions(content)
 
     local animFrame = self:CreateStyledCheckbox(leftColumn, "Animate Task Icons")
     animFrame:SetPoint("TOPLEFT", 20, yOffset)
-    animFrame.checkbox:SetChecked(SQPSettings.animateQuestIcons == true)
+    animFrame.checkbox:SetChecked(SQP:GetSettings().animateQuestIcons == true)
     self.optionControls.animateQuestIcons = animFrame.checkbox
     animFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('animateQuestIcons', self:GetChecked())
@@ -106,7 +106,7 @@ function SQP:CreateKillOptions(content)
 
     local animMainFrame = self:CreateStyledCheckbox(leftColumn, "Animate Main Icon")
     animMainFrame:SetPoint("TOPLEFT", 20, yOffset)
-    animMainFrame.checkbox:SetChecked(SQPSettings.killAnimateMain == true)
+    animMainFrame.checkbox:SetChecked(SQP:GetSettings().killAnimateMain == true)
     self.optionControls.killAnimateMain = animMainFrame.checkbox
     animMainFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('killAnimateMain', self:GetChecked())
@@ -116,12 +116,12 @@ function SQP:CreateKillOptions(content)
 
     local killAnimIntensityLabel = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     killAnimIntensityLabel:SetPoint("TOPLEFT", 20, yOffset)
-    killAnimIntensityLabel:SetText(string.format("Intensity: %d%%", SQPSettings.killAnimationIntensity or 100))
+    killAnimIntensityLabel:SetText(string.format("Intensity: %d%%", SQP:GetSettings().killAnimationIntensity or 100))
     self.optionControls.killAnimationIntensityLabel = killAnimIntensityLabel
 
     local killAnimIntensitySlider = self:CreateStyledSlider(leftColumn, 25, 200, 5, 160)
     killAnimIntensitySlider:SetPoint("TOPLEFT", killAnimIntensityLabel, "BOTTOMLEFT", 0, -4)
-    killAnimIntensitySlider:SetValue(SQPSettings.killAnimationIntensity or 100)
+    killAnimIntensitySlider:SetValue(SQP:GetSettings().killAnimationIntensity or 100)
     self.optionControls.killAnimationIntensity = killAnimIntensitySlider
 
     local killAnimIntensityReset = self:CreateInlineResetButton(leftColumn, function()
@@ -156,7 +156,7 @@ function SQP:CreateKillOptions(content)
     cbg:SetAllPoints(); cbg:SetColorTexture(0, 0, 0, 1)
     local sw = colorBtn:CreateTexture(nil, "ARTWORK")
     sw:SetSize(16, 16); sw:SetPoint("CENTER")
-    sw:SetColorTexture(unpack(SQPSettings.killColor or killDefault))
+    sw:SetColorTexture(unpack(SQP:GetSettings().killColor or killDefault))
     SQP.optionControls.killColorSwatch = sw
 
     local colorLbl = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -171,7 +171,7 @@ function SQP:CreateKillOptions(content)
 
     colorBtn:SetScript("OnClick", function()
         ActivateKill()
-        local r, g, b = unpack(SQPSettings.killColor or killDefault)
+        local r, g, b = unpack(SQP:GetSettings().killColor or killDefault)
         local info = {r = r, g = g, b = b, hasOpacity = false}
         info.swatchFunc = function()
             local nr, ng, nb = ColorPickerFrame:GetColorRGB()

@@ -36,7 +36,7 @@ function SQP:CreateGlobalOptions(content)
     disableButton:SetPoint("LEFT", enableButton, "RIGHT", 10, 0)
 
     local function UpdateEnabledButtons()
-        if SQPSettings.enabled ~= false then
+        if SQP:GetSettings().enabled ~= false then
             enableButton:SetAlpha(1); disableButton:SetAlpha(0.6)
         else
             enableButton:SetAlpha(0.6); disableButton:SetAlpha(1)
@@ -61,17 +61,17 @@ function SQP:CreateGlobalOptions(content)
 
     local debugFrame = self:CreateStyledCheckbox(leftColumn, self.L["OPTIONS_DEBUG"] or "Enable Debug Mode")
     debugFrame:SetPoint("TOPLEFT", 20, yOffset)
-    debugFrame.checkbox:SetChecked(SQPSettings.debug)
+    debugFrame.checkbox:SetChecked(SQP:GetSettings().debug)
     self.optionControls.debug = debugFrame.checkbox
     debugFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('debug', self:GetChecked())
-        SQP:PrintMessage(SQPSettings.debug and "Debug mode enabled" or "Debug mode disabled")
+        SQP:PrintMessage(SQP:GetSettings().debug and "Debug mode enabled" or "Debug mode disabled")
     end)
     yOffset = yOffset - 26
 
     local chatFrame = self:CreateStyledCheckbox(leftColumn, self.L["OPTIONS_CHAT_MESSAGES"] or "Show Chat Messages")
     chatFrame:SetPoint("TOPLEFT", 20, yOffset)
-    chatFrame.checkbox:SetChecked(SQPSettings.showMessages ~= false)
+    chatFrame.checkbox:SetChecked(SQP:GetSettings().showMessages ~= false)
     self.optionControls.showMessages = chatFrame.checkbox
     chatFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('showMessages', self:GetChecked())
@@ -86,18 +86,18 @@ function SQP:CreateGlobalOptions(content)
 
     local overrideAnimFrame = self:CreateStyledCheckbox(leftColumn, "Use Global Animation Override")
     overrideAnimFrame:SetPoint("TOPLEFT", 20, yOffset)
-    overrideAnimFrame.checkbox:SetChecked(SQPSettings.useGlobalAnimationSettings == true)
+    overrideAnimFrame.checkbox:SetChecked(SQP:GetSettings().useGlobalAnimationSettings == true)
     self.optionControls.useGlobalAnimationSettings = overrideAnimFrame.checkbox
     yOffset = yOffset - 26
 
     local globalAnimEnableFrame = self:CreateStyledCheckbox(leftColumn, "Enable All Animations")
     globalAnimEnableFrame:SetPoint("TOPLEFT", 20, yOffset)
-    globalAnimEnableFrame.checkbox:SetChecked(SQPSettings.globalAnimationEnabled ~= false)
+    globalAnimEnableFrame.checkbox:SetChecked(SQP:GetSettings().globalAnimationEnabled ~= false)
     self.optionControls.globalAnimationEnabled = globalAnimEnableFrame.checkbox
     yOffset = yOffset - 28
 
     local function GetAnimationCombatMode()
-        local mode = SQPSettings.animationCombatMode
+        local mode = SQP:GetSettings().animationCombatMode
         if mode ~= "always" and mode ~= "combat" and mode ~= "outofcombat" then
             mode = "always"
         end
@@ -148,12 +148,12 @@ function SQP:CreateGlobalOptions(content)
 
     local globalIntensityLabel = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     globalIntensityLabel:SetPoint("TOPLEFT", 20, yOffset)
-    globalIntensityLabel:SetText(format("Global Intensity: %d%%", SQPSettings.globalAnimationIntensity or 100))
+    globalIntensityLabel:SetText(format("Global Intensity: %d%%", SQP:GetSettings().globalAnimationIntensity or 100))
     self.optionControls.globalAnimationIntensityLabel = globalIntensityLabel
 
     local globalIntensitySlider = self:CreateStyledSlider(leftColumn, 25, 200, 5, 160)
     globalIntensitySlider:SetPoint("TOPLEFT", globalIntensityLabel, "BOTTOMLEFT", 0, -4)
-    globalIntensitySlider:SetValue(SQPSettings.globalAnimationIntensity or 100)
+    globalIntensitySlider:SetValue(SQP:GetSettings().globalAnimationIntensity or 100)
     self.optionControls.globalAnimationIntensity = globalIntensitySlider
 
     local globalIntensityReset = self:CreateInlineResetButton(leftColumn, function()
@@ -166,7 +166,7 @@ function SQP:CreateGlobalOptions(content)
     yOffset = yOffset - 44
 
     local function UpdateGlobalAnimationControls()
-        local override = SQPSettings.useGlobalAnimationSettings == true
+        local override = SQP:GetSettings().useGlobalAnimationSettings == true
         if globalAnimEnableFrame then
             globalAnimEnableFrame:SetAlpha(override and 1 or 0.5)
             if globalAnimEnableFrame.checkbox then
@@ -210,7 +210,7 @@ function SQP:CreateGlobalOptions(content)
 
     local combatFrame = self:CreateStyledCheckbox(leftColumn, self.L["OPTIONS_HIDE_COMBAT"] or "Hide Icons in Combat")
     combatFrame:SetPoint("TOPLEFT", 20, yOffset)
-    combatFrame.checkbox:SetChecked(SQPSettings.hideInCombat)
+    combatFrame.checkbox:SetChecked(SQP:GetSettings().hideInCombat)
     self.optionControls.hideInCombat = combatFrame.checkbox
     combatFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('hideInCombat', self:GetChecked()); SQP:RefreshAllNameplates()
@@ -219,7 +219,7 @@ function SQP:CreateGlobalOptions(content)
 
     local instanceFrame = self:CreateStyledCheckbox(leftColumn, self.L["OPTIONS_HIDE_INSTANCE"] or "Hide Icons in Instances")
     instanceFrame:SetPoint("TOPLEFT", 20, yOffset)
-    instanceFrame.checkbox:SetChecked(SQPSettings.hideInInstance)
+    instanceFrame.checkbox:SetChecked(SQP:GetSettings().hideInInstance)
     self.optionControls.hideInInstance = instanceFrame.checkbox
     instanceFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('hideInInstance', self:GetChecked()); SQP:RefreshAllNameplates()
@@ -247,12 +247,12 @@ function SQP:CreateGlobalOptions(content)
     -- Global Scale
     local scaleLabel = rightColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     scaleLabel:SetPoint("TOPLEFT", 20, rightYOffset)
-    scaleLabel:SetText(format("Scale: %.1f", SQPSettings.scale or 1.1))
+    scaleLabel:SetText(format("Scale: %.1f", SQP:GetSettings().scale or 1.1))
     self.optionControls.scaleLabel = scaleLabel
 
     local scaleSlider = self:CreateStyledSlider(rightColumn, 0.5, 3.0, 0.1, 160)
     scaleSlider:SetPoint("TOPLEFT", scaleLabel, "BOTTOMLEFT", 0, -4)
-    scaleSlider:SetValue(SQPSettings.scale or 1.1)
+    scaleSlider:SetValue(SQP:GetSettings().scale or 1.1)
     self.optionControls.scale = scaleSlider
 
     local scaleReset = self:CreateInlineResetButton(rightColumn, function()
@@ -274,12 +274,12 @@ function SQP:CreateGlobalOptions(content)
     -- X Offset
     local xLabel = rightColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     xLabel:SetPoint("TOPLEFT", 20, rightYOffset)
-    xLabel:SetText(format("Offset X: %d", SQPSettings.offsetX or 0))
+    xLabel:SetText(format("Offset X: %d", SQP:GetSettings().offsetX or 0))
     self.optionControls.offsetXLabel = xLabel
 
     local xSlider = self:CreateStyledSlider(rightColumn, -100, 100, 1, 160)
     xSlider:SetPoint("TOPLEFT", xLabel, "BOTTOMLEFT", 0, -4)
-    xSlider:SetValue(SQPSettings.offsetX or 0)
+    xSlider:SetValue(SQP:GetSettings().offsetX or 0)
     self.optionControls.offsetX = xSlider
 
     local xReset = self:CreateInlineResetButton(rightColumn, function()
@@ -301,12 +301,12 @@ function SQP:CreateGlobalOptions(content)
     -- Y Offset
     local yLabel = rightColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     yLabel:SetPoint("TOPLEFT", 20, rightYOffset)
-    yLabel:SetText(format("Offset Y: %d", SQPSettings.offsetY or 3))
+    yLabel:SetText(format("Offset Y: %d", SQP:GetSettings().offsetY or 3))
     self.optionControls.offsetYLabel = yLabel
 
     local ySlider = self:CreateStyledSlider(rightColumn, -100, 100, 1, 160)
     ySlider:SetPoint("TOPLEFT", yLabel, "BOTTOMLEFT", 0, -4)
-    ySlider:SetValue(SQPSettings.offsetY or 3)
+    ySlider:SetValue(SQP:GetSettings().offsetY or 3)
     self.optionControls.offsetY = ySlider
 
     local yReset = self:CreateInlineResetButton(rightColumn, function()
@@ -338,8 +338,8 @@ function SQP:CreateGlobalOptions(content)
     self.optionControls.anchorButtons = {left = leftBtn, right = rightBtn}
 
     local function UpdateAnchorButtons()
-        leftBtn:SetAlpha( SQPSettings.anchor == "RIGHT" and 1 or 0.6)
-        rightBtn:SetAlpha(SQPSettings.anchor == "LEFT"  and 1 or 0.6)
+        leftBtn:SetAlpha( SQP:GetSettings().anchor == "RIGHT" and 1 or 0.6)
+        rightBtn:SetAlpha(SQP:GetSettings().anchor == "LEFT"  and 1 or 0.6)
     end
     self.optionControls.updateAnchorButtons = UpdateAnchorButtons
     UpdateAnchorButtons()

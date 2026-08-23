@@ -120,7 +120,7 @@ function SQP:CreatePreviewSection(parent)
     iconTextOutline:SetText("3")
 
     -- Default to showing kill quest type
-    iconText:SetTextColor(unpack(SQPSettings.killColor or {1, 0.82, 0}))
+    iconText:SetTextColor(unpack(SQP:GetSettings().killColor or {1, 0.82, 0}))
 
     -- Loot icon
     local lootIcon = questFrame:CreateTexture(nil, "OVERLAY", nil, 1)
@@ -306,11 +306,11 @@ function SQP:CreatePreviewSection(parent)
         -- Update icon position
         icon:ClearAllPoints()
         icon:SetPoint(
-            SQPSettings.anchor or 'RIGHT',
+            SQP:GetSettings().anchor or 'RIGHT',
             nameplate,
-            SQPSettings.relativeTo or 'LEFT',
-            SQPSettings.offsetX or 0,
-            SQPSettings.offsetY or 0
+            SQP:GetSettings().relativeTo or 'LEFT',
+            SQP:GetSettings().offsetX or 0,
+            SQP:GetSettings().offsetY or 0
         )
 
         if self.killIcon then
@@ -319,10 +319,10 @@ function SQP:CreatePreviewSection(parent)
                 'TOPRIGHT',
                 icon,
                 'BOTTOMLEFT',
-                SQPSettings.killIconOffsetX or 2,
-                SQPSettings.killIconOffsetY or 15
+                SQP:GetSettings().killIconOffsetX or 2,
+                SQP:GetSettings().killIconOffsetY or 15
             )
-            self.killIcon:SetSize(SQPSettings.killIconSize or 14, SQPSettings.killIconSize or 14)
+            self.killIcon:SetSize(SQP:GetSettings().killIconSize or 14, SQP:GetSettings().killIconSize or 14)
         end
         if self.lootIcon then
             self.lootIcon:ClearAllPoints()
@@ -330,14 +330,14 @@ function SQP:CreatePreviewSection(parent)
                 'TOPLEFT',
                 icon,
                 'BOTTOMRIGHT',
-                SQPSettings.lootIconOffsetX or -38,
-                SQPSettings.lootIconOffsetY or 16
+                SQP:GetSettings().lootIconOffsetX or -38,
+                SQP:GetSettings().lootIconOffsetY or 16
             )
-            self.lootIcon:SetSize(SQPSettings.lootIconSize or 14, SQPSettings.lootIconSize or 14)
+            self.lootIcon:SetSize(SQP:GetSettings().lootIconSize or 14, SQP:GetSettings().lootIconSize or 14)
         end
 
         -- Update scale
-        questFrame:SetScale(SQPSettings.scale or 1)
+        questFrame:SetScale(SQP:GetSettings().scale or 1)
 
         -- Update font with current quest type
         local previewTypeKey = self.questType or "kill"
@@ -346,12 +346,12 @@ function SQP:CreatePreviewSection(parent)
         -- Main icon tinting removed (redundant with color controls)
         icon:SetVertexColor(1, 1, 1, 1)
 
-        local killTintEnabled = SQPSettings.killTintIcon and SQPSettings.killTintIconColor
-        local lootTintEnabled = SQPSettings.lootTintIcon and SQPSettings.lootTintIconColor
-        local percentTintEnabled = SQPSettings.percentTintIcon and SQPSettings.percentTintIconColor
+        local killTintEnabled = SQP:GetSettings().killTintIcon and SQP:GetSettings().killTintIconColor
+        local lootTintEnabled = SQP:GetSettings().lootTintIcon and SQP:GetSettings().lootTintIconColor
+        local percentTintEnabled = SQP:GetSettings().percentTintIcon and SQP:GetSettings().percentTintIconColor
         if self.killIcon then
             if killTintEnabled then
-                local r, g, b, a = unpack(SQPSettings.killTintIconColor)
+                local r, g, b, a = unpack(SQP:GetSettings().killTintIconColor)
                 self.killIcon:SetVertexColor(r, g, b, a or 1)
             else
                 self.killIcon:SetVertexColor(1, 1, 1, 1)
@@ -359,7 +359,7 @@ function SQP:CreatePreviewSection(parent)
         end
         if self.lootIcon then
             if lootTintEnabled then
-                local r, g, b, a = unpack(SQPSettings.lootTintIconColor)
+                local r, g, b, a = unpack(SQP:GetSettings().lootTintIconColor)
                 self.lootIcon:SetVertexColor(r, g, b, a or 1)
             else
                 self.lootIcon:SetVertexColor(1, 1, 1, 1)
@@ -369,17 +369,17 @@ function SQP:CreatePreviewSection(parent)
         local function SetPreviewPercentColor(fs)
             if not fs then return end
             if percentTintEnabled then
-                local r, g, b, a = unpack(SQPSettings.percentTintIconColor)
+                local r, g, b, a = unpack(SQP:GetSettings().percentTintIconColor)
                 fs:SetTextColor(r, g, b, a or 1)
             else
-                fs:SetTextColor(unpack(SQPSettings.percentColor or {0.2, 1, 1}))
+                fs:SetTextColor(unpack(SQP:GetSettings().percentColor or {0.2, 1, 1}))
             end
         end
 
         local function IsPreviewIconStyleEnabled(typeKey)
-            local value = SQPSettings[typeKey .. "ShowIconBackground"]
+            local value = SQP:GetSettings()[typeKey .. "ShowIconBackground"]
             if value == nil then
-                value = SQPSettings.showIconBackground
+                value = SQP:GetSettings().showIconBackground
             end
             return value ~= false
         end
@@ -391,7 +391,7 @@ function SQP:CreatePreviewSection(parent)
             if self.percentIcon then self.percentIcon:Hide() end
             if self.percentIconOutline then self.percentIconOutline:Hide() end
             if self.lootIcon then
-                if SQPSettings.showLootIcon ~= false then self.lootIcon:Show() else self.lootIcon:Hide() end
+                if SQP:GetSettings().showLootIcon ~= false then self.lootIcon:Show() else self.lootIcon:Hide() end
             end
             if self.killIcon then self.killIcon:Hide() end
             if lootIconMode then
@@ -408,7 +408,7 @@ function SQP:CreatePreviewSection(parent)
             if self.percentIconOutline then self.percentIconOutline:Hide() end
             if self.lootIcon then self.lootIcon:Hide() end
             if self.killIcon then
-                if SQPSettings.showKillIcon ~= false then self.killIcon:Show() else self.killIcon:Hide() end
+                if SQP:GetSettings().showKillIcon ~= false then self.killIcon:Show() else self.killIcon:Hide() end
             end
             if killIconMode then
                 self.iconText:SetText("5")
@@ -423,9 +423,9 @@ function SQP:CreatePreviewSection(parent)
             if self.lootIcon then self.lootIcon:Hide() end
             if self.killIcon  then self.killIcon:Hide()  end
 
-            if SQPSettings.showPercentIcon ~= false then
-                local pOffX = SQPSettings.percentIconOffsetX or 18
-                local pOffY = SQPSettings.percentIconOffsetY or 0
+            if SQP:GetSettings().showPercentIcon ~= false then
+                local pOffX = SQP:GetSettings().percentIconOffsetX or 18
+                local pOffY = SQP:GetSettings().percentIconOffsetY or 0
                 local pOW   = SQP:GetOutlineInfo("percent")
                 if percentIconMode then
                     -- Icon mode: jellybean + number + "%" at offset
@@ -551,7 +551,7 @@ function SQP:CreatePreviewSection(parent)
 
     -- External helpers to switch preview mode from tab clicks and option controls
     previewFrame.activateKillMode = function()
-        iconText:SetTextColor(unpack(SQPSettings.killColor or {1, 0.82, 0}))
+        iconText:SetTextColor(unpack(SQP:GetSettings().killColor or {1, 0.82, 0}))
         lootIcon:Hide()
         killIcon:Hide()
         previewFrame.questType = "kill"
@@ -560,7 +560,7 @@ function SQP:CreatePreviewSection(parent)
     end
 
     previewFrame.activateLootMode = function()
-        iconText:SetTextColor(unpack(SQPSettings.itemColor or {0.2, 1, 0.2}))
+        iconText:SetTextColor(unpack(SQP:GetSettings().itemColor or {0.2, 1, 0.2}))
         lootIcon:Show()
         killIcon:Hide()
         previewFrame.questType = "loot"
@@ -569,7 +569,7 @@ function SQP:CreatePreviewSection(parent)
     end
 
     previewFrame.activatePercentMode = function()
-        iconText:SetTextColor(unpack(SQPSettings.percentColor or {0.2, 1, 1}))
+        iconText:SetTextColor(unpack(SQP:GetSettings().percentColor or {0.2, 1, 1}))
         lootIcon:Hide()
         killIcon:Hide()
         previewFrame.questType = "percent"
@@ -604,11 +604,11 @@ function SQP:RefreshAllNameplates()
         if self.previewFrame.iconText then
             local qt = self.previewFrame.questType
             if qt == "kill" then
-                self.previewFrame.iconText:SetTextColor(unpack(SQPSettings.killColor or {1, 0.82, 0}))
+                self.previewFrame.iconText:SetTextColor(unpack(SQP:GetSettings().killColor or {1, 0.82, 0}))
             elseif qt == "loot" then
-                self.previewFrame.iconText:SetTextColor(unpack(SQPSettings.itemColor or {0.2, 1, 0.2}))
+                self.previewFrame.iconText:SetTextColor(unpack(SQP:GetSettings().itemColor or {0.2, 1, 0.2}))
             elseif qt == "percent" then
-                self.previewFrame.iconText:SetTextColor(unpack(SQPSettings.percentColor or {0.2, 1, 1}))
+                self.previewFrame.iconText:SetTextColor(unpack(SQP:GetSettings().percentColor or {0.2, 1, 1}))
             end
         end
     end
