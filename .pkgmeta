@@ -1,4 +1,4 @@
-package-as: SimpleQuestPlates
+package-as: SQP_Classic
 
 enable-nolib-creation: no
 
@@ -6,6 +6,9 @@ ignore:
   - .github
   - .gitignore
   - README.md
+  - AGENTS.md
+  - GEMINI.md
+  - .claude
   - .pkgmeta
 
 plain-copy:
