@@ -22,7 +22,7 @@ function SQP:CreatePercentOptions(content)
 
     -- ── Slider helper ─────────────────────────────────────────────────────────
     local function MakeSlider(parent, labelText, key, defaultVal, minVal, maxVal, yOff)
-        local val = SQPSettings[key] ~= nil and SQPSettings[key] or defaultVal
+        local val = SQP:GetSettings()[key] ~= nil and SQP:GetSettings()[key] or defaultVal
         local lbl = parent:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
         lbl:SetPoint("TOPLEFT", 20, yOff)
         lbl:SetText(string.format("%s: %d", labelText, val))
@@ -70,7 +70,7 @@ function SQP:CreatePercentOptions(content)
     -- Show Percent Icon
     local showFrame = self:CreateStyledCheckbox(leftColumn, "Show Percent Icon")
     showFrame:SetPoint("TOPLEFT", 20, yOffset)
-    showFrame.checkbox:SetChecked(SQPSettings.showPercentIcon ~= false)
+    showFrame.checkbox:SetChecked(SQP:GetSettings().showPercentIcon ~= false)
     self.optionControls.showPercentIcon = showFrame.checkbox
     showFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('showPercentIcon', self:GetChecked())
@@ -90,7 +90,7 @@ function SQP:CreatePercentOptions(content)
 
     local animTaskFrame = self:CreateStyledCheckbox(leftColumn, "Animate Task Icons")
     animTaskFrame:SetPoint("TOPLEFT", 20, yOffset)
-    animTaskFrame.checkbox:SetChecked(SQPSettings.animateQuestIcons == true)
+    animTaskFrame.checkbox:SetChecked(SQP:GetSettings().animateQuestIcons == true)
     self.optionControls.animateQuestIconsPercent = animTaskFrame.checkbox
     animTaskFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('animateQuestIcons', self:GetChecked())
@@ -108,7 +108,7 @@ function SQP:CreatePercentOptions(content)
 
     local animFrame = self:CreateStyledCheckbox(leftColumn, "Animate Main Icon")
     animFrame:SetPoint("TOPLEFT", 20, yOffset)
-    animFrame.checkbox:SetChecked(SQPSettings.percentAnimateMain == true)
+    animFrame.checkbox:SetChecked(SQP:GetSettings().percentAnimateMain == true)
     self.optionControls.percentAnimateMain = animFrame.checkbox
     animFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('percentAnimateMain', self:GetChecked())
@@ -119,12 +119,12 @@ function SQP:CreatePercentOptions(content)
 
     local percentAnimIntensityLabel = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     percentAnimIntensityLabel:SetPoint("TOPLEFT", 20, yOffset)
-    percentAnimIntensityLabel:SetText(string.format("Intensity: %d%%", SQPSettings.percentAnimationIntensity or 100))
+    percentAnimIntensityLabel:SetText(string.format("Intensity: %d%%", SQP:GetSettings().percentAnimationIntensity or 100))
     self.optionControls.percentAnimationIntensityLabel = percentAnimIntensityLabel
 
     local percentAnimIntensitySlider = self:CreateStyledSlider(leftColumn, 25, 200, 5, 160)
     percentAnimIntensitySlider:SetPoint("TOPLEFT", percentAnimIntensityLabel, "BOTTOMLEFT", 0, -4)
-    percentAnimIntensitySlider:SetValue(SQPSettings.percentAnimationIntensity or 100)
+    percentAnimIntensitySlider:SetValue(SQP:GetSettings().percentAnimationIntensity or 100)
     self.optionControls.percentAnimationIntensity = percentAnimIntensitySlider
 
     local percentAnimIntensityReset = self:CreateInlineResetButton(leftColumn, function()
@@ -159,7 +159,7 @@ function SQP:CreatePercentOptions(content)
     cbg:SetAllPoints(); cbg:SetColorTexture(0, 0, 0, 1)
     local sw = colorBtn:CreateTexture(nil, "ARTWORK")
     sw:SetSize(16, 16); sw:SetPoint("CENTER")
-    sw:SetColorTexture(unpack(SQPSettings.percentColor or pctDefault))
+    sw:SetColorTexture(unpack(SQP:GetSettings().percentColor or pctDefault))
     SQP.optionControls.percentColorSwatch = sw
 
     local colorLbl = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -174,7 +174,7 @@ function SQP:CreatePercentOptions(content)
 
     colorBtn:SetScript("OnClick", function()
         ActivatePercent()
-        local r, g, b = unpack(SQPSettings.percentColor or pctDefault)
+        local r, g, b = unpack(SQP:GetSettings().percentColor or pctDefault)
         local info = {r = r, g = g, b = b, hasOpacity = false}
         info.swatchFunc = function()
             local nr, ng, nb = ColorPickerFrame:GetColorRGB()

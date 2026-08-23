@@ -121,7 +121,7 @@ local function OnUpdate(self, elapsed)
         nameplateUpdateTimer = 0
         
         -- Only scan if addon is enabled
-        if SQPSettings and SQPSettings.enabled then
+        if SQP:GetSettings() and SQP:GetSettings().enabled then
             -- Skip scan if nothing has changed
             local currentCount = WorldFrame:GetNumChildren()
             if currentCount ~= lastNameplateCount then

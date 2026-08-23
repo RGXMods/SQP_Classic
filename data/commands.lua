@@ -82,11 +82,11 @@ function SQP:ShowStatus()
     local anchorLine = GetText(self, "STATUS_ANCHOR", GetText(self, "CMD_STATUS_ANCHOR", "  Anchor: |cff58be81%s|r"))
 
     self:PrintMessage(statusHeader)
-    print(format(statusLine, SQPSettings.enabled and enabledText or disabledText))
+    print(format(statusLine, SQP:GetSettings().enabled and enabledText or disabledText))
     print(format(versionLine, self.VERSION or "unknown"))
-    print(format(scaleLine, SQPSettings.scale or 1))
-    print(format(offsetLine, SQPSettings.offsetX or 0, SQPSettings.offsetY or 0))
-    print(format(anchorLine, SQPSettings.anchor or "RIGHT"))
+    print(format(scaleLine, SQP:GetSettings().scale or 1))
+    print(format(offsetLine, SQP:GetSettings().offsetX or 0, SQP:GetSettings().offsetY or 0))
+    print(format(anchorLine, SQP:GetSettings().anchor or "RIGHT"))
 end
 
 function SQP:DebugTarget()
@@ -140,7 +140,7 @@ function SQP:SetScale(scale)
         return
     end
     
-    SQPSettings.scale = scale
+    SQP:GetSettings().scale = scale
     self:SaveSettings()
     self:PrintMessage(format(GetText(self, "SETTINGS_SCALE_SET", GetText(self, "CMD_SCALE_SET", "Icon scale set to: |cff58be81%.1f|r")), scale))
     self:RefreshAllNameplates()
@@ -155,8 +155,8 @@ function SQP:SetOffset(x, y)
         return
     end
     
-    SQPSettings.offsetX = x
-    SQPSettings.offsetY = y
+    SQP:GetSettings().offsetX = x
+    SQP:GetSettings().offsetY = y
     self:SaveSettings()
     self:PrintMessage(format(GetText(self, "SETTINGS_OFFSET_SET", GetText(self, "CMD_OFFSET_SET", "Icon offset set to: |cff58be81X=%d, Y=%d|r")), x, y))
     self:RefreshAllNameplates()
@@ -170,8 +170,8 @@ function SQP:SetAnchor(anchor)
         return
     end
     
-    SQPSettings.anchor = anchor
-    SQPSettings.relativeTo = anchor == "LEFT" and "RIGHT" or "LEFT"
+    SQP:GetSettings().anchor = anchor
+    SQP:GetSettings().relativeTo = anchor == "LEFT" and "RIGHT" or "LEFT"
     self:SaveSettings()
     self:PrintMessage(format(GetText(self, "SETTINGS_ANCHOR_SET", "Anchor set to: |cff58be81%s|r"), anchor))
     self:RefreshAllNameplates()
@@ -210,8 +210,8 @@ function SQP:ProcessSlashCommand(input)
     elseif input == "options" or input == "config" then
         self:OpenOptions()
     elseif input == "debug" then
-        SQPSettings.debug = not SQPSettings.debug
-        self:PrintMessage(format("Debug mode: %s", SQPSettings.debug and "ON" or "OFF"))
+        SQP:GetSettings().debug = not SQP:GetSettings().debug
+        self:PrintMessage(format("Debug mode: %s", SQP:GetSettings().debug and "ON" or "OFF"))
     elseif input == "debug target" then
         self:DebugTarget()
     elseif input == "debug nameplates" then

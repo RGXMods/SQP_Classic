@@ -28,13 +28,13 @@ function SQP:ADDON_LOADED(addon)
         if questFrame then
             questFrame.icon:ClearAllPoints()
             questFrame.icon:SetPoint(
-                SQPSettings.anchor or 'RIGHT',
+                SQP:GetSettings().anchor or 'RIGHT',
                 questFrame,
-                SQPSettings.relativeTo or 'LEFT',
-                (SQPSettings.offsetX or 0) / (SQPSettings.scale or 1),
-                (SQPSettings.offsetY or 0) / (SQPSettings.scale or 1)
+                SQP:GetSettings().relativeTo or 'LEFT',
+                (SQP:GetSettings().offsetX or 0) / (SQP:GetSettings().scale or 1),
+                (SQP:GetSettings().offsetY or 0) / (SQP:GetSettings().scale or 1)
             )
-            questFrame:SetScale(SQPSettings.scale or 1)
+            questFrame:SetScale(SQP:GetSettings().scale or 1)
         end
     end
     
@@ -167,16 +167,16 @@ end
 -- Combat state changes
 function SQP:PLAYER_REGEN_DISABLED()
     -- Entered combat
-    local animationMode = SQPSettings.animationCombatMode or "always"
-    if SQPSettings.hideInCombat or animationMode ~= "always" then
+    local animationMode = SQP:GetSettings().animationCombatMode or "always"
+    if SQP:GetSettings().hideInCombat or animationMode ~= "always" then
         self:RefreshAllNameplates()
     end
 end
 
 function SQP:PLAYER_REGEN_ENABLED()
     -- Left combat
-    local animationMode = SQPSettings.animationCombatMode or "always"
-    if SQPSettings.hideInCombat or animationMode ~= "always" then
+    local animationMode = SQP:GetSettings().animationCombatMode or "always"
+    if SQP:GetSettings().hideInCombat or animationMode ~= "always" then
         self:RefreshAllNameplates()
     end
 end

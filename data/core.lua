@@ -64,7 +64,7 @@ local IsInInstance = IsInInstance
 if not SQP then SQP = {} end
 
 -- Addon metadata
-SQP.VERSION = "1.9.6-classic"
+SQP.VERSION = RGX.API.GetAddOnMetadata(addonName, "Version") or "unknown"
 SQP.NAME = RGX.API.GetAddOnMetadata(addonName, "Title") or addonName or "SimpleQuestPlates"
 SQP.AUTHOR = RGX.API.GetAddOnMetadata(addonName, "Author") or "DonnieDice"
 SQP.LOCALE = GetLocale()
@@ -367,6 +367,12 @@ function SQP:GetSavedSettings()
     return SQPClassicSettings
 end
 
+-- Canonical settings accessor. Old code referenced a `SQPSettings` global that
+-- no longer exists; every consumer must read settings through this instead.
+function SQP:GetSettings()
+    return (self.db and self.db.global) or SQPClassicSettings or self.DEFAULTS or {}
+end
+
 -- Save settings (RGX handles persistence automatically)
 function SQP:SaveSettings()
     -- RGX:NewDatabase handles persistence; no-op for manual save
@@ -510,11 +516,13 @@ RGX:RegisterSlashCommand("sqp", function(input)
 end, "SQP_Classic")
 
 -- Initialize
+-- NOTE: data/events.lua registers its own event frame at file scope; there is
+-- no SQP:RegisterEvents() method. Migrating that plumbing onto RGX events is
+-- tracked as migration debt, not part of this hotfix.
 RGX:OnLoad(addonName, function()
     SQP:SetupMinimapButton()
     SQP:InitializeSettings()
     SQP:InitializeFrameworkUI()
-    SQP:RegisterEvents()
 end)
 
 RGX:OnLogin(function()

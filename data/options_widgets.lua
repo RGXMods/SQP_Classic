@@ -104,7 +104,7 @@ function SQP:CreateFontSection(parent, typeKey, yOffset, dropdownName, activateP
     yOffset = yOffset - 22
 
     -- ── Font Size ──────────────────────────────────────────────────────────
-    local curSize = SQPSettings[typeKey.."FontSize"] or defaultSize
+    local curSize = SQP:GetSettings()[typeKey.."FontSize"] or defaultSize
     local sizeLabel = parent:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     sizeLabel:SetPoint("TOPLEFT", 20, yOffset)
     sizeLabel:SetText(string.format("Size: %d", curSize))
@@ -172,12 +172,12 @@ function SQP:CreateFontSection(parent, typeKey, yOffset, dropdownName, activateP
                 if activatePreviewFn then activatePreviewFn() end
                 SQP:RefreshAllNameplates()
             end
-            info.checked = (SQPSettings[typeKey.."FontFamily"] == opt.font)
+            info.checked = (SQP:GetSettings()[typeKey.."FontFamily"] == opt.font)
             UIDropDownMenu_AddButton(info, level)
         end
     end)
 
-    local curFamily = SQPSettings[typeKey.."FontFamily"] or "Fonts\\FRIZQT__.TTF"
+    local curFamily = SQP:GetSettings()[typeKey.."FontFamily"] or "Fonts\\FRIZQT__.TTF"
     for _, opt in ipairs(fontOptions) do
         if opt.font == curFamily then UIDropDownMenu_SetText(fontDd, opt.text); break end
     end
@@ -214,9 +214,9 @@ function SQP:CreateDisplayStyleSection(parent, typeKey, activatePreviewFn, yOffs
     textStyleBtn:SetPoint("LEFT", iconStyleBtn, "RIGHT", 8, 0)
 
     local function IsIconStyleEnabled()
-        local value = SQPSettings[settingKey]
+        local value = SQP:GetSettings()[settingKey]
         if value == nil and typeKey then
-            value = SQPSettings.showIconBackground
+            value = SQP:GetSettings().showIconBackground
         end
         return value ~= false
     end
@@ -287,12 +287,12 @@ function SQP:CreateMiniIconTintSection(parent, typeKey, activatePreviewFn, yOffs
     tintBg:SetAllPoints(); tintBg:SetColorTexture(0, 0, 0, 1)
     local tintSw = tintColorBtn:CreateTexture(nil, "ARTWORK")
     tintSw:SetSize(16, 16); tintSw:SetPoint("CENTER")
-    tintSw:SetColorTexture(unpack(SQPSettings[tintColorKey] or {1, 1, 1}))
+    tintSw:SetColorTexture(unpack(SQP:GetSettings()[tintColorKey] or {1, 1, 1}))
 
     -- Checkbox + label inline with swatch
     local tintCbFrame = self:CreateStyledCheckbox(parent, labelText)
     tintCbFrame:SetPoint("LEFT", tintColorBtn, "RIGHT", 6, 0)
-    tintCbFrame.checkbox:SetChecked(SQPSettings[tintKey] == true)
+    tintCbFrame.checkbox:SetChecked(SQP:GetSettings()[tintKey] == true)
     self.optionControls[tintKey] = tintCbFrame.checkbox
 
     local tintReset = self:CreateInlineResetButton(parent, function()
@@ -304,7 +304,7 @@ function SQP:CreateMiniIconTintSection(parent, typeKey, activatePreviewFn, yOffs
     tintReset:SetPoint("LEFT", tintCbFrame.label, "RIGHT", 6, 0)
 
     local function UpdateTintAlpha()
-        local a = SQPSettings[tintKey] == true and 1 or 0.4
+        local a = SQP:GetSettings()[tintKey] == true and 1 or 0.4
         tintColorBtn:SetAlpha(a)
         tintReset:SetAlpha(a * 0.7)
     end
@@ -321,9 +321,9 @@ function SQP:CreateMiniIconTintSection(parent, typeKey, activatePreviewFn, yOffs
     end)
 
     tintColorBtn:SetScript("OnClick", function()
-        if not SQPSettings[tintKey] then return end
+        if not SQP:GetSettings()[tintKey] then return end
         if activatePreviewFn then activatePreviewFn() end
-        local r, g, b = unpack(SQPSettings[tintColorKey] or {1, 1, 1})
+        local r, g, b = unpack(SQP:GetSettings()[tintColorKey] or {1, 1, 1})
         local info = {r = r, g = g, b = b, hasOpacity = false}
         info.swatchFunc = function()
             local nr, ng, nb = ColorPickerFrame:GetColorRGB()
@@ -363,7 +363,7 @@ function SQP:CreateMainIconSection(parent, typeKey, activatePreviewFn, yOffset, 
     if not skipAnimate then
         local animFrame = self:CreateStyledCheckbox(parent, "Animate Main Icon")
         animFrame:SetPoint("TOPLEFT", 20, yOffset)
-        animFrame.checkbox:SetChecked(SQPSettings[animKey] == true)
+        animFrame.checkbox:SetChecked(SQP:GetSettings()[animKey] == true)
         self.optionControls[animKey] = animFrame.checkbox
         animFrame.checkbox:SetScript("OnClick", function(self)
             SQP:SetSetting(animKey, self:GetChecked())
@@ -380,11 +380,11 @@ function SQP:CreateMainIconSection(parent, typeKey, activatePreviewFn, yOffset, 
     tintBg:SetAllPoints(); tintBg:SetColorTexture(0, 0, 0, 1)
     local tintSw = tintColorBtn:CreateTexture(nil, "ARTWORK")
     tintSw:SetSize(16, 16); tintSw:SetPoint("CENTER")
-    tintSw:SetColorTexture(unpack(SQPSettings[tintColorKey] or {1, 1, 1}))
+    tintSw:SetColorTexture(unpack(SQP:GetSettings()[tintColorKey] or {1, 1, 1}))
 
     local tintCbFrame = self:CreateStyledCheckbox(parent, "Tint Main Icon")
     tintCbFrame:SetPoint("LEFT", tintColorBtn, "RIGHT", 6, 0)
-    tintCbFrame.checkbox:SetChecked(SQPSettings[tintKey] == true)
+    tintCbFrame.checkbox:SetChecked(SQP:GetSettings()[tintKey] == true)
     self.optionControls[tintKey] = tintCbFrame.checkbox
 
     local tintReset = self:CreateInlineResetButton(parent, function()
@@ -395,7 +395,7 @@ function SQP:CreateMainIconSection(parent, typeKey, activatePreviewFn, yOffset, 
     tintReset:SetPoint("LEFT", tintCbFrame.label, "RIGHT", 6, 0)
 
     local function UpdateTintAlpha()
-        local a = SQPSettings[tintKey] == true and 1 or 0.4
+        local a = SQP:GetSettings()[tintKey] == true and 1 or 0.4
         tintColorBtn:SetAlpha(a)
         tintReset:SetAlpha(a * 0.7)
     end
@@ -409,9 +409,9 @@ function SQP:CreateMainIconSection(parent, typeKey, activatePreviewFn, yOffset, 
     end)
 
     tintColorBtn:SetScript("OnClick", function()
-        if not SQPSettings[tintKey] then return end
+        if not SQP:GetSettings()[tintKey] then return end
         if activatePreviewFn then activatePreviewFn() end
-        local r, g, b = unpack(SQPSettings[tintColorKey] or {1, 1, 1})
+        local r, g, b = unpack(SQP:GetSettings()[tintColorKey] or {1, 1, 1})
         local info = {r = r, g = g, b = b, hasOpacity = false}
         info.swatchFunc = function()
             local nr, ng, nb = ColorPickerFrame:GetColorRGB()

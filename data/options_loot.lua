@@ -22,7 +22,7 @@ function SQP:CreateLootOptions(content)
 
     -- ── Slider helper ─────────────────────────────────────────────────────────
     local function MakeSlider(parent, labelText, key, defaultVal, minVal, maxVal, yOff)
-        local val = SQPSettings[key] ~= nil and SQPSettings[key] or defaultVal
+        local val = SQP:GetSettings()[key] ~= nil and SQP:GetSettings()[key] or defaultVal
         local lbl = parent:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
         lbl:SetPoint("TOPLEFT", 20, yOff)
         lbl:SetText(string.format("%s: %d", labelText, val))
@@ -70,7 +70,7 @@ function SQP:CreateLootOptions(content)
     -- Show Loot Icon
     local showFrame = self:CreateStyledCheckbox(leftColumn, "Show Loot Icon")
     showFrame:SetPoint("TOPLEFT", 20, yOffset)
-    showFrame.checkbox:SetChecked(SQPSettings.showLootIcon ~= false)
+    showFrame.checkbox:SetChecked(SQP:GetSettings().showLootIcon ~= false)
     self.optionControls.showLootIcon = showFrame.checkbox
     showFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('showLootIcon', self:GetChecked())
@@ -90,7 +90,7 @@ function SQP:CreateLootOptions(content)
 
     local animFrame = self:CreateStyledCheckbox(leftColumn, "Animate Task Icons")
     animFrame:SetPoint("TOPLEFT", 20, yOffset)
-    animFrame.checkbox:SetChecked(SQPSettings.animateQuestIcons == true)
+    animFrame.checkbox:SetChecked(SQP:GetSettings().animateQuestIcons == true)
     self.optionControls.animateQuestIconsLoot = animFrame.checkbox
     animFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('animateQuestIcons', self:GetChecked())
@@ -106,7 +106,7 @@ function SQP:CreateLootOptions(content)
 
     local animMainFrame = self:CreateStyledCheckbox(leftColumn, "Animate Main Icon")
     animMainFrame:SetPoint("TOPLEFT", 20, yOffset)
-    animMainFrame.checkbox:SetChecked(SQPSettings.lootAnimateMain == true)
+    animMainFrame.checkbox:SetChecked(SQP:GetSettings().lootAnimateMain == true)
     self.optionControls.lootAnimateMain = animMainFrame.checkbox
     animMainFrame.checkbox:SetScript("OnClick", function(self)
         SQP:SetSetting('lootAnimateMain', self:GetChecked())
@@ -116,12 +116,12 @@ function SQP:CreateLootOptions(content)
 
     local lootAnimIntensityLabel = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
     lootAnimIntensityLabel:SetPoint("TOPLEFT", 20, yOffset)
-    lootAnimIntensityLabel:SetText(string.format("Intensity: %d%%", SQPSettings.lootAnimationIntensity or 100))
+    lootAnimIntensityLabel:SetText(string.format("Intensity: %d%%", SQP:GetSettings().lootAnimationIntensity or 100))
     self.optionControls.lootAnimationIntensityLabel = lootAnimIntensityLabel
 
     local lootAnimIntensitySlider = self:CreateStyledSlider(leftColumn, 25, 200, 5, 160)
     lootAnimIntensitySlider:SetPoint("TOPLEFT", lootAnimIntensityLabel, "BOTTOMLEFT", 0, -4)
-    lootAnimIntensitySlider:SetValue(SQPSettings.lootAnimationIntensity or 100)
+    lootAnimIntensitySlider:SetValue(SQP:GetSettings().lootAnimationIntensity or 100)
     self.optionControls.lootAnimationIntensity = lootAnimIntensitySlider
 
     local lootAnimIntensityReset = self:CreateInlineResetButton(leftColumn, function()
@@ -156,7 +156,7 @@ function SQP:CreateLootOptions(content)
     cbg:SetAllPoints(); cbg:SetColorTexture(0, 0, 0, 1)
     local sw = colorBtn:CreateTexture(nil, "ARTWORK")
     sw:SetSize(16, 16); sw:SetPoint("CENTER")
-    sw:SetColorTexture(unpack(SQPSettings.itemColor or lootDefault))
+    sw:SetColorTexture(unpack(SQP:GetSettings().itemColor or lootDefault))
     SQP.optionControls.lootColorSwatch = sw
 
     local colorLbl = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -171,7 +171,7 @@ function SQP:CreateLootOptions(content)
 
     colorBtn:SetScript("OnClick", function()
         ActivateLoot()
-        local r, g, b = unpack(SQPSettings.itemColor or lootDefault)
+        local r, g, b = unpack(SQP:GetSettings().itemColor or lootDefault)
         local info = {r = r, g = g, b = b, hasOpacity = false}
         info.swatchFunc = function()
             local nr, ng, nb = ColorPickerFrame:GetColorRGB()

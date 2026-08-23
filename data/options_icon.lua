@@ -36,12 +36,12 @@ function SQP:CreateIconOptions(content)
 
     local xSlider = self:CreateStyledSlider(leftColumn, -100, 100, 1, 160)
     xSlider:SetPoint("TOPLEFT", xLabel, "BOTTOMLEFT", 0, -5)
-    xSlider:SetValue(SQPSettings.offsetX)
+    xSlider:SetValue(SQP:GetSettings().offsetX)
     self.optionControls.offsetX = xSlider
 
     local xValue = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
     xValue:SetPoint("LEFT", xSlider, "RIGHT", 6, 0)
-    xValue:SetText(tostring(SQPSettings.offsetX))
+    xValue:SetText(tostring(SQP:GetSettings().offsetX))
 
     local xReset = self:CreateInlineResetButton(leftColumn, function()
         SQP:SetSetting('offsetX', 12)
@@ -66,12 +66,12 @@ function SQP:CreateIconOptions(content)
 
     local ySlider = self:CreateStyledSlider(leftColumn, -100, 100, 1, 160)
     ySlider:SetPoint("TOPLEFT", yLabel, "BOTTOMLEFT", 0, -5)
-    ySlider:SetValue(SQPSettings.offsetY)
+    ySlider:SetValue(SQP:GetSettings().offsetY)
     self.optionControls.offsetY = ySlider
 
     local yValue = leftColumn:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
     yValue:SetPoint("LEFT", ySlider, "RIGHT", 6, 0)
-    yValue:SetText(tostring(SQPSettings.offsetY))
+    yValue:SetText(tostring(SQP:GetSettings().offsetY))
 
     local yReset = self:CreateInlineResetButton(leftColumn, function()
         SQP:SetSetting('offsetY', 3)
@@ -102,8 +102,8 @@ function SQP:CreateIconOptions(content)
     self.optionControls.anchorButtons = {left = leftBtn, right = rightBtn}
 
     local function UpdateAnchorButtons()
-        leftBtn:SetAlpha( SQPSettings.anchor == "RIGHT" and 1 or 0.6)
-        rightBtn:SetAlpha(SQPSettings.anchor == "LEFT"  and 1 or 0.6)
+        leftBtn:SetAlpha( SQP:GetSettings().anchor == "RIGHT" and 1 or 0.6)
+        rightBtn:SetAlpha(SQP:GetSettings().anchor == "LEFT"  and 1 or 0.6)
     end
     self.optionControls.updateAnchorButtons = UpdateAnchorButtons
     UpdateAnchorButtons()
@@ -144,12 +144,12 @@ function SQP:CreateIconOptions(content)
 
     local scaleSlider = self:CreateStyledSlider(rightColumn, 0.5, 3.0, 0.1, 160)
     scaleSlider:SetPoint("TOPLEFT", scaleLabel, "BOTTOMLEFT", 0, -5)
-    scaleSlider:SetValue(SQPSettings.scale)
+    scaleSlider:SetValue(SQP:GetSettings().scale)
     self.optionControls.scale = scaleSlider
 
     local scaleValue = rightColumn:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
     scaleValue:SetPoint("LEFT", scaleSlider, "RIGHT", 6, 0)
-    scaleValue:SetText(format("%.1f", SQPSettings.scale))
+    scaleValue:SetText(format("%.1f", SQP:GetSettings().scale))
 
     local scaleReset = self:CreateInlineResetButton(rightColumn, function()
         SQP:SetSetting('scale', 1.1)
