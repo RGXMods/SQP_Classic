@@ -22,3 +22,14 @@ SQP_Classic is the Classic-only fork of SimpleQuestPlates. Work on the `classic-
 
 - There is no build step or automated test suite. Install the repository as `SQP_Classic` with a matching Classic build of `RGX-Framework`. Test each changed supported flavor with `/reload`, `/sqp help`, `/sqp status`, `/sqp test`, quest/nameplate updates, target and mouseover detection, options and previews, persistence, and locale fallback behavior.
 - Release tags and versions must retain the fork's `-classic` identity. The inherited `.github/workflows/release.yml` currently references the absent `SimpleQuestPlates.toc` and accepts only plain semantic-version tags, so do not claim or rely on automated packaging until that workflow is repaired for `SQP_Classic.toc` and Classic-suffixed versions.
+
+## Repository Workflow
+
+- The GitLab project under `rgxmods/warcraft` is authoritative. Normal work belongs on task branches and must merge through GitLab merge requests, never directly to the default branch.
+- Shared CI is included from `rgxmods/warcraft/RGX-Framework` at `/.gitlab/ci/addon.yml`; validation must pass before publishing to the GitHub mirror.
+- The GitHub `RGXMods` repository is downstream distribution, not development authority.
+- Keep GitLab and GitHub release tags identical, and use protected GitLab release tags.
+- Preserve any existing working Wago connection and ID exactly. Never create a new Wago connection without explicit user direction.
+- Publishing integrations prohibited by the shared validation policy are retired and must not be restored.
+- The root `README.md` must remain detailed and project-specific. Narrow distribution edits must not replace or truncate installation, features, compatibility, usage, media, or support content.
+- Verify relative README assets. Do not overwrite newer compatibility facts with stale monorepo or history text.
